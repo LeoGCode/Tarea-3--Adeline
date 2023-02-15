@@ -1,0 +1,240 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Define Article %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Using Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mdframed}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{psfrag}
+\usepackage{pgfplots}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{hyperref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Other Settings
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Page Setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{a4paper}
+
+% \setlength{\tabcolsep}{0.5cm}
+% \renewcommand{\arraystretch}{1.3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Define some useful colors %%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ocre}{RGB}{243,102,25}
+\definecolor{mygray}{RGB}{243,243,244}
+\definecolor{deepGreen}{RGB}{26,111,0}
+\definecolor{shallowGreen}{RGB}{235,255,255}
+\definecolor{deepBlue}{RGB}{61,124,222}
+\definecolor{shallowBlue}{RGB}{235,249,255}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Define an orangebox command %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\orangebox[1]{\fcolorbox{ocre}{mygray}{\hspace{1em}#1\hspace{1em}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% English Environments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheoremstyle{mytheoremstyle}{3pt}{3pt}{\normalfont}{0cm}{\rmfamily\bfseries}{}{1em}{{\color{black}\thmname{#1}~\thmnumber{#2}}\thmnote{\,--\,#3}}
+\newtheoremstyle{myproblemstyle}{3pt}{3pt}{\normalfont}{0cm}{\rmfamily\bfseries}{}{1em}{{\color{black}\thmname{#1}~\thmnumber{#2}}\thmnote{\,--\,#3}}
+\theoremstyle{mytheoremstyle}
+\newmdtheoremenv[linewidth=1pt,backgroundcolor=shallowGreen,linecolor=deepGreen,leftmargin=0pt,innerleftmargin=20pt,innerrightmargin=20pt,]{theorem}{Theorem}[section]
+\theoremstyle{mytheoremstyle}
+\newmdtheoremenv[linewidth=1pt,backgroundcolor=shallowBlue,linecolor=deepBlue,leftmargin=0pt,innerleftmargin=20pt,innerrightmargin=20pt,]{definition}{Definition}[section]
+\theoremstyle{myproblemstyle}
+\newmdtheoremenv[linecolor=black,leftmargin=0pt,innerleftmargin=10pt,innerrightmargin=10pt,]{problem}{Problem}[section]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Plotting Settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepgfplotslibrary{colorbrewer}
+\pgfplotsset{width=8cm,compat=1.9}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title & Author %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Tarea 3: Adaline}
+\author{Leonel Guerrero}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+\section*{Pregunta 1: Implementación de Adaline}
+
+\subsection*{Enunciado}
+
+Programe el Adaline usando el algoritmo del LMS. Usted deberá entregar su código documentado
+
+\subsection*{Implementación}
+
+La implementación del algoritmo la podrá encontrar en dos modalidades, un repositorio de GitHub y un link a un notebook de Google Colab.
+
+\begin{itemize}
+  \item \href{https://github.com/LeoGCode/Tarea-2--Perceptron/tree/master}{GitHub}
+  \item \href{https://colab.research.google.com/drive/19HIDV-svO55OROQ8nh3c4EpypbrmDVmw?authuser=1#scrollTo=RFcFA9MZ0MEW}{Google Colab}
+\end{itemize}
+
+\section*{Pregunta 2: Clasificación con Adaline}
+
+\subsection*{Enunciado}
+
+Para el conjunto de entrenamiento usado en la tarea del perceptrón, repita la experiencia pero ahora con el Adaline. Evalúe y compare este algoritmo con los resultados obtenidos en la y tarea anterior. Comente sobre su escogencia en los parámetros de aprendizaje.
+
+\subsection*{Experimentos}
+
+Veamos el desempeño del algoritmo Adaline con el conjunto de datos de la tarea anterior
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{ccc}
+    \cline{2-3}
+                              & \begin{tabular}[c]{@{}c@{}}Tasa de\\ aprendizaje\end{tabular} & \begin{tabular}[c]{@{}c@{}}Error cuadrático\\ medio\end{tabular} \\ \hline
+    \begin{tabular}[c]{@{}c@{}}Ciencias de la tierra y\\ el espacio vs\\ Ciencias medicas\end{tabular} & 0.001                     & 117.6796                  \\ \hline
+    \begin{tabular}[c]{@{}c@{}}Ciencias de la vida\\ vs\\ Agricultura\end{tabular} & 0.001                     & 1300                      \\ \hline
+  \end{tabular}
+  \caption{Desempeño del algoritmo Adaline}
+\end{table}
+
+\vspace{0.2cm}
+
+A continuación veamos una gráfica para apreciar como el algoritmo va convergiendo a medida que se va entrenando para cada uno de los casos.
+
+\vspace{0.2cm}
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={Época},
+        ylabel={Error cuadrático medio},
+        axis lines=middle,
+        title={Ciencias de la tierra y el espacio vs Ciencias médicas},
+        clip=false,
+        xmin=0,
+        xmax=120,
+        ymin=0,
+        ymax=240,
+        xtick={0, 20, 40, 60, 80, 100, 120},
+        ytick={0, 40, 80, 120, 160, 200, 240}
+      ]
+      \addplot[
+        only marks,
+        color=blue,
+      ]
+      table[x=epoch, y=error, col sep=comma]
+        {results/EarthSpace-MedSci.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Gráfica de convergencia para el caso CTS vs CM}
+\end{figure}
+
+\vspace{0.6cm}
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={Época},
+        ylabel={Error cuadrático medio},
+        axis lines=middle,
+        title={Ciencias de la vida vs Agricultura},
+        clip=false,
+        xmin=0,
+        xmax=120,
+        ymin=1000,
+        ymax=1600
+      ]
+      \addplot[
+        only marks,
+        color=blue,
+      ]
+      table[x=epoch, y=error, col sep=comma]
+        {results/LifeSci-Agri.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Gráfica de convergencia para el caso CV vs A}
+\end{figure}
+
+Como se puede apreciar en las gráficas a medida que se aumenta las épocas el error cuadrático medio va disminuyendo, lo que indica que el algoritmo esta convergiendo a un valor óptimo, si se aumenta la cantidad de épocas el algoritmo puede encontrar un mejor valor óptimo. Si comparamos estos resultados con los de la tarea anterior podremos apreciar que ambos van convergiendo a un valor óptimo, a pesar de que las funciones a optimizar sean diferentes, donde uno busca maximizar y el Adaline minimizar.
+
+Un factor clave a destacar es como se comporta las predicciones y los modelos en si, ya que el Adaline busca minimizar el error que se comete al predecir un valor, por lo cual es muy poco probable que este logre predecir correctamente algún dato, aunque si logre estar muy cerca de la respuesta correcta. En contraposición al Perceptrón el cual busca maximizar la cantidad de predicciones correctas, por lo cual es mas probable que este prediga correctamente un dato, aunque si se equivoca la respuesta que predice puede no estar cerca de la respuesta correcta.
+
+Se escogieron parámetros muy similares a los utilizados en el Perceptrón, ya que el conjunto de datos es el mismo, por lo cual se espera que el algoritmo tenga un comportamiento similar, se escogió una tasa de aprendizaje de $0.001$ y un número de épocas máximo de $100$.
+
+\section*{Pregunta 3: Interpolación con Adaline}
+
+\subsection*{Enunciado}
+
+Para los datos en datosT3.csv busque un interpolador utilizando un Adaline. Comente sobre las decisiones del algoritmo como por ejemplo número de épocas, tasa de aprendizaje, etc
+
+\subsection*{Experimentos}
+
+Al ejecutar el algoritmo del Adaline para el conjunto de datos se consiguió el siguiente resultado $f(x) = 0.0156 + 1.1099x$, en donde el error cuadrático medio fue de $36.3187$. Veamos a continuación la gráfica de convergencia del algoritmo y la recta de interpolación encontrada.
+
+\vspace{0.2cm}
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={Época},
+        ylabel={Error cuadrático medio},
+        axis lines=middle,
+        title={Interpolación con Adaline},
+        clip=false,
+        xmin=0,
+        xmax=110,
+        ymin=0,
+        ymax=180,
+      ]
+      \addplot[
+        only marks,
+        color=blue,
+      ]
+      table[x=epoch, y=error, col sep=comma]
+        {results/Intp-datosT3.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Convergencia del algoritmo}
+\end{figure}
+
+\newpage
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        xlabel={x},
+        ylabel={y},
+        axis lines=middle,
+        title={Interpolación con Adaline},
+        clip=false,
+      ]
+      \addplot[
+        color=blue,
+        mark=none,
+        samples=2
+      ]
+      {0.0156 + 1.1099*x};
+      \addplot[
+        only marks,
+        color=red,
+      ]
+      table[x index=0, y index=1, col sep=comma]
+        {data/datosT3.csv};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+Como se puede apreciar en la gráfica de convergencia el algoritmo logra converger a un valor óptimo en un número de épocas relativamente bajo, en donde el error cuadrático medio es de $36.3187$, lo que indica que el algoritmo logro encontrar una recta que se ajusta a los datos de manera aceptable.
+
+Los parámetros utilizados para el algoritmo fueron una tasa de aprendizaje de $0.001$ y un número de épocas máximo de $100$, ya que estos parámetros se utilizaron en el caso anterior y después de realizar una prueba sobre los datos se detecto que estos parámetros lograban un resultado aceptable. Sin embargo se puede apreciar que el algoritmo converge de manera muy rápida en donde en la época 25 el error cuadrático medio ya es de $36.3187$, a partir del cual logra mejorar muy poco.
+
+\end{document}
