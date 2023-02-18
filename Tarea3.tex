@@ -177,7 +177,7 @@ Para los datos en datosT3.csv busque un interpolador utilizando un Adaline. Come
 
 \subsection*{Experimentos}
 
-Al ejecutar el algoritmo del Adaline para el conjunto de datos se consiguió el siguiente resultado $f(x) = 0.0156 + 1.1099x$, en donde el error cuadrático medio fue de $36.3187$. Veamos a continuación la gráfica de convergencia del algoritmo y la recta de interpolación encontrada.
+Al analizar el conjunto de datos se detecto que estos seguían un comportamiento polinómico, en especifico se vio una tendencia a de los datos a ajustarse a un polinomio de grado 3, de esta manera al ejecutar el algoritmo del Adaline para el conjunto de datos intentando conseguir una interpolación de un polinomio de grado 3, se consiguió el siguiente resultado $f(x) = -0.0159+0.1282x+0.0189x^2+0.3967x^3$, en donde el error cuadrático medio mínimo logrado fue de $11.1$. Veamos a continuación la gráfica de convergencia del algoritmo y la recta de interpolación encontrada.
 
 \vspace{0.2cm}
 
@@ -191,9 +191,9 @@ Al ejecutar el algoritmo del Adaline para el conjunto de datos se consiguió el 
         title={Interpolación con Adaline},
         clip=false,
         xmin=0,
-        xmax=110,
+        xmax=22,
         ymin=0,
-        ymax=180,
+        ymax=35,
       ]
       \addplot[
         only marks,
@@ -216,13 +216,18 @@ Al ejecutar el algoritmo del Adaline para el conjunto de datos se consiguió el 
         axis lines=middle,
         title={Interpolación con Adaline},
         clip=false,
+        xmin=-3,
+        xmax=3,
+        ymin=-5,
+        ymax=5,
       ]
       \addplot[
         color=blue,
         mark=none,
-        samples=2
+        samples=50,
+        domain=-2.2:2.2
       ]
-      {0.0156 + 1.1099*x};
+      {-0.0159 + 0.1282*x + 0.0189*x^2 + 0.3967*x^3};
       \addplot[
         only marks,
         color=red,
@@ -233,8 +238,8 @@ Al ejecutar el algoritmo del Adaline para el conjunto de datos se consiguió el 
   \end{tikzpicture}
 \end{figure}
 
-Como se puede apreciar en la gráfica de convergencia el algoritmo logra converger a un valor óptimo en un número de épocas relativamente bajo, en donde el error cuadrático medio es de $36.3187$, lo que indica que el algoritmo logro encontrar una recta que se ajusta a los datos de manera aceptable.
+Como se puede apreciar en la gráfica de convergencia el algoritmo logra converger a un valor óptimo en un número de épocas relativamente bajo, en donde el error cuadrático medio mínimo es de $11.1$, lo que indica que el algoritmo logro encontrar el polinomio de grado 3 que se ajusta a los datos de la mejor manera.
 
-Los parámetros utilizados para el algoritmo fueron una tasa de aprendizaje de $0.001$ y un número de épocas máximo de $100$, ya que estos parámetros se utilizaron en el caso anterior y después de realizar una prueba sobre los datos se detecto que estos parámetros lograban un resultado aceptable. Sin embargo se puede apreciar que el algoritmo converge de manera muy rápida en donde en la época 25 el error cuadrático medio ya es de $36.3187$, a partir del cual logra mejorar muy poco.
+Los parámetros utilizados para el algoritmo fueron una tasa de aprendizaje de $0.001$ por que se aprecio que era un valor que ayudaba a la convergencia y un número de épocas máximo de $10$, ya que después de realizar unas pruebas sobre los datos se detecto que estos parámetros lograban un resultado aceptable. Sin embargo se puede apreciar que el algoritmo converge de manera muy rápida en donde en la época 10 el error cuadrático medio ya es de $11.1$, a partir del cual logra mejorar muy poco.
 
 \end{document}
